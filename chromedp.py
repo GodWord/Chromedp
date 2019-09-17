@@ -120,7 +120,7 @@ class Chromedp:
             self.self_transfer(self.wait_visible, sel)
 
     def self_transfer(self, func, *args, **kwargs):
-        getattr(self, func)(*args, **kwargs)
+        func(*args, **kwargs)
 
     def set_node_id(self, tab=None, pierce=True):
         msg = self.call_method('DOM.getDocument', tab=tab, pierce=pierce)
