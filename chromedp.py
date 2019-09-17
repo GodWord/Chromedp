@@ -117,7 +117,10 @@ class Chromedp:
         msg = self.perform_search(sel)
         if msg is None:
             time.sleep(0.5)
-            return self.wait_visible(sel)
+            self.self_transfer(self.wait_visible, sel)
+
+    def self_transfer(self, func, *args, **kwargs):
+        getattr(self, func)(*args, **kwargs)
 
     def set_node_id(self, tab=None, pierce=True):
         msg = self.call_method('DOM.getDocument', tab=tab, pierce=pierce)
