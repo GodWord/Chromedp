@@ -1,4 +1,5 @@
 import json
+import os
 import random
 import time
 
@@ -6,9 +7,11 @@ import requests
 
 from chromedp import Chromedp
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
 
 def get_city():
-    path = './static/city.json'
+    path = os.path.join(BASE_DIR, 'static/city.json')
     with open(path, 'r', encoding='utf-8') as f:
         data = json.loads(f.read())
     return list(data['city'].values())
@@ -19,7 +22,7 @@ def push_cookie():
     # ch = Chromedp(ua=ua) #移动端
     ch = Chromedp()  # PC
     count = 0
-    for i in range(50):
+    for i in range(100):
         try:
             for city in get_city():
                 ch.clear_browser_cookies()
@@ -42,6 +45,9 @@ def push_cookie():
                 print('已上传cookie数量:%d个' % (count,))
                 print('开始休眠:[%d]秒' % (sleep,))
                 time.sleep(sleep)
+        except KeyboardInterrupt as e:
+            ch.quit()
+            return
         except Exception as e:
             print(e)
             ch.quit()
